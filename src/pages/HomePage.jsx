@@ -1,35 +1,17 @@
-// src/pages/HomePage.jsx
 import React from 'react';
 import { Search, GraduationCap, FileText, Building2, Target, Users, CheckCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import Navbar from '../components/NavBar';
+
 
 const HomePage = () => {
   return (
     <>
-      {/* Header Navigation */}
-      <header className="bg-white shadow-sm border-bottom">
-        <nav className="container-fluid py-2 px-4 d-flex align-items-center justify-content-between">
-          <div className="d-flex align-items-center gap-4">
-            <div className="d-flex align-items-center gap-2">
-              <GraduationCap size={28} className="text-danger" />
-              <span className="fw-bold fs-4 text-dark">UniMatch</span>
-            </div>
-            <div className="d-flex gap-3">
-              <a href="/" className="text-dark text-decoration-none fw-medium">Home</a>
-              <a href="/info" className="text-dark text-decoration-none fw-medium">Info/FAQ</a>
-              <a href="/catalog" className="text-dark text-decoration-none fw-medium">Catalog</a>
-            </div>
-          </div>
-          <div className="d-flex gap-2">
-            <button className="btn btn-outline-danger">Login</button>
-            <button className="btn btn-danger text-white">Signup</button>
-            <button className="btn btn-outline-secondary">Profile</button>
-          </div>
-        </nav>
-      </header>
+      <Navbar />
 
       {/* HERO SECTION WITH ANIMATED BACKGROUND */}
       <section className="position-relative py-5 overflow-hidden" style={{ minHeight: '80vh' }}>
-        {/* ANIMATED BACKGROUND - ONLY IN HERO */}
+        
         <div className="animated-bg-hero">
           <div className="wave"></div>
           <div className="wave"></div>
@@ -62,7 +44,7 @@ const HomePage = () => {
             </div>
           </div>
 
-          {/* Role Cards - ORIGINAL BOOTSTRAP BUTTONS + Z-INDEX FIX */}
+          {/* Role Cards */}
           <div className="row justify-content-center mt-5 g-4">
             {/* Student Card */}
             <div className="col-md-3">
@@ -77,7 +59,9 @@ const HomePage = () => {
                   Find research positions, internships, and graduate opportunities
                 </p>
                 <div className="mt-auto">
-                  <button className="btn btn-danger text-white w-100">Get Started</button>
+                  <Link to="/signup" className="btn btn-danger text-white w-100">
+                    Get Started
+                  </Link>
                 </div>
               </div>
             </div>
@@ -95,7 +79,7 @@ const HomePage = () => {
                   Post research opportunities and find talented students
                 </p>
                 <div className="mt-auto">
-                  <button className="btn btn-outline-danger w-100">University Portal</button>
+                  <Link to="/signup" className="btn btn-outline-danger w-100">University Portal</Link>
                 </div>
               </div>
             </div>
@@ -113,7 +97,7 @@ const HomePage = () => {
                   Connect with interns and graduate talent
                 </p>
                 <div className="mt-auto">
-                  <button className="btn btn-outline-danger w-100">Company Portal</button>
+                  <Link to="/signup" className="btn btn-outline-danger w-100">Company Portal</Link>
                 </div>
               </div>
             </div>
