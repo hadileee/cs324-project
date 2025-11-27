@@ -48,7 +48,12 @@ const StudentPortal = () => {
                   <Briefcase size={40} className="text-danger mb-3" />
                   <h5 className="fw-bold">Research</h5>
                   <p className="text-muted small">Browse academic research opportunities</p>
-                  <button className="btn btn-outline-danger w-100">Find Research</button>
+                  <button
+                    className="btn btn-outline-danger w-100"
+                    onClick={() => navigate('/opportunities?type=research')}
+                  >
+                    Find Research
+                  </button>
                 </div>
               </div>
 
@@ -57,7 +62,12 @@ const StudentPortal = () => {
                   <Building size={40} className="text-danger mb-3" />
                   <h5 className="fw-bold">Internships</h5>
                   <p className="text-muted small">Discover internship opportunities</p>
-                  <button className="btn btn-outline-danger w-100">Find Internships</button>
+                  <button
+                    className="btn btn-outline-danger w-100"
+                    onClick={() => navigate('/opportunities?type=internship')}
+                  >
+                    Find Internships
+                  </button>
                 </div>
               </div>
 
@@ -66,7 +76,12 @@ const StudentPortal = () => {
                   <CheckCircle size={40} className="text-danger mb-3" />
                   <h5 className="fw-bold">Graduate Jobs</h5>
                   <p className="text-muted small">Explore full-time job opportunities</p>
-                  <button className="btn btn-outline-danger w-100">Find Jobs</button>
+                  <button
+                    className="btn btn-outline-danger w-100"
+                    onClick={() => navigate('/opportunities?type=graduate_job')}
+                  >
+                    Find Jobs
+                  </button>
                 </div>
               </div>
             </div>
