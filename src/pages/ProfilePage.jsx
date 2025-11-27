@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Upload, Save, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Save, AlertCircle } from 'lucide-react';
 import AnimatedBackground from '../components/AnimatedBackground';
 import api from '../services/api';
 import Navbar from '../components/NavBar';
@@ -11,7 +11,6 @@ const ProfilePage = () => {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [avatar, setAvatar] = useState(null);
   
   const [personalInfo, setPersonalInfo] = useState({
     firstName: '',
@@ -139,13 +138,6 @@ const ProfilePage = () => {
       ...preferences,
       [name]: type === 'checkbox' ? checked : value,
     });
-  };
-
-  const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setAvatar(URL.createObjectURL(file));
-    }
   };
 
   const handleSave = async () => {
