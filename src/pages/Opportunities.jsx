@@ -46,7 +46,7 @@ const Opportunities = () => {
     };
 
     fetchOpportunities();
-  }, [type]);
+  }, [type, locationFilter, skillsFilter, page, limit]);
 
   const titleMap = {
     research: 'Research Opportunities',
