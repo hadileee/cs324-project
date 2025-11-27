@@ -11,6 +11,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Opportunities from './pages/Opportunities';
 import OpportunityDetail from './pages/OpportunityDetail';
+import OpportunityApplications from './pages/OpportunityApplications';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/company-portal" element={<CompanyPortal />} />
   <Route path="/opportunities" element={<Opportunities />} />
   <Route path="/opportunities/:id" element={<OpportunityDetail />} />
+  <Route path="/opportunities/:id/applications" element={<OpportunityApplications />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
