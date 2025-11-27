@@ -273,6 +273,7 @@ const ProfilePage = () => {
             </div>
 
             {/* PERSONAL INFO */}
+              {/* PERSONAL INFO */}
             <section className="mb-5">
               <h2 className="h5 fw-bold text-danger mb-3">Personal Information</h2>
               <div className="row g-3">
