@@ -2,24 +2,39 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import AnimatedBackground from '../components/AnimatedBackground';
+import api from '../services/api';
 
 const LoginPage = () => {
-  const [emailOrUsername, setEmailOrUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-  e.preventDefault();
-  // detect role from email
-  const mockRole = emailOrUsername.includes('uni') ? 'university' :
-                   emailOrUsername.includes('corp') ? 'company' : 'student';
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
 
-  setTimeout(() => {
-    if (mockRole === 'student') navigate('/student-portal');
-    else if (mockRole === 'university') navigate('/university-portal');
-    else if (mockRole === 'company') navigate('/company-portal');
-  }, 500);
-};
+    try {
+      const response = await api.post('/auth/login', { email, password });
+      
+      // Save token and user info to localStorage
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+
+      // Redirect based on role
+      const { role } = response.data.user;
+      if (role === 'student') navigate('/student-portal');
+      else if (role === 'university') navigate('/university-portal');
+      else if (role === 'company') navigate('/company-portal');
+      else navigate('/profile');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -39,16 +54,19 @@ const LoginPage = () => {
             <h2 className="h4 fw-bold text-center mb-3">Welcome back</h2>
             <p className="text-muted text-center mb-4">Log in to your UniMatch account</p>
 
+            {error && <div className="alert alert-danger" role="alert">{error}</div>}
+
             <form onSubmit={handleLogin}>
               <div className="mb-3">
-                <label className="form-label">Email or Username</label>
+                <label className="form-label">Email</label>
                 <input
-                  type="text"
+                  type="email"
                   className="form-control"
-                  value={emailOrUsername}
-                  onChange={(e) => setEmailOrUsername(e.target.value)}
-                  placeholder="Enter your email or username"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
                   required
+                  disabled={loading}
                 />
               </div>
 
@@ -61,6 +79,7 @@ const LoginPage = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   required
+                  disabled={loading}
                 />
               </div>
 
@@ -70,8 +89,8 @@ const LoginPage = () => {
                 </Link>
               </div>
 
-              <button type="submit" className="btn btn-danger w-100 text-white">
-                Log in
+              <button type="submit" className="btn btn-danger w-100 text-white" disabled={loading}>
+                {loading ? 'Logging in...' : 'Log in'}
               </button>
             </form>
 

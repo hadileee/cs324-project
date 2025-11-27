@@ -2,29 +2,67 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import AnimatedBackground from '../components/AnimatedBackground';
+import api from '../services/api';
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
-    firstName: '', lastName: '', email: '', password: '', age: '', gender: '', role: ''
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    role: 'student',
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSignup = (e) => {
-  e.preventDefault();
-  console.log("Signup:", formData);
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    setError('');
 
-  setTimeout(() => {
-    const role = formData.role;
-    if (role === 'student') navigate('/student-portal');
-    else if (role === 'university') navigate('/university-portal');
-    else if (role === 'company') navigate('/company-portal');
-    else navigate('/login');
-  }, 500);
-};
+    // Validation
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await api.post('/auth/register', {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
+      });
+
+      // Save token and user info
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+
+      // Redirect to appropriate portal
+      const { role } = response.data.user;
+      if (role === 'student') navigate('/student-portal');
+      else if (role === 'university') navigate('/university-portal');
+      else if (role === 'company') navigate('/company-portal');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Signup failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -44,56 +82,100 @@ const SignupPage = () => {
             <h2 className="h4 fw-bold text-center mb-3">Create your account</h2>
             <p className="text-muted text-center mb-4">Join UniMatch to discover opportunities</p>
 
+            {error && <div className="alert alert-danger" role="alert">{error}</div>}
+
             <form onSubmit={handleSignup}>
               <div className="row g-3">
                 <div className="col-6">
                   <label className="form-label">First Name *</label>
-                  <input type="text" name="firstName" className="form-control" value={formData.firstName} onChange={handleChange} placeholder="John" required />
+                  <input
+                    type="text"
+                    name="firstName"
+                    className="form-control"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    placeholder="John"
+                    required
+                    disabled={loading}
+                  />
                 </div>
                 <div className="col-6">
                   <label className="form-label">Last Name *</label>
-                  <input type="text" name="lastName" className="form-control" value={formData.lastName} onChange={handleChange} placeholder="Doe" required />
+                  <input
+                    type="text"
+                    name="lastName"
+                    className="form-control"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    placeholder="Doe"
+                    required
+                    disabled={loading}
+                  />
                 </div>
               </div>
 
               <div className="mb-3">
                 <label className="form-label">Email *</label>
-                <input type="email" name="email" className="form-control" value={formData.email} onChange={handleChange} placeholder="john.doe@example.com" required />
+                <input
+                  type="email"
+                  name="email"
+                  className="form-control"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="john.doe@example.com"
+                  required
+                  disabled={loading}
+                />
               </div>
 
               <div className="mb-3">
                 <label className="form-label">Password *</label>
-                <input type="password" name="password" className="form-control" value={formData.password} onChange={handleChange} placeholder="Create a strong password" required />
+                <input
+                  type="password"
+                  name="password"
+                  className="form-control"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Create a strong password (min 6 characters)"
+                  required
+                  minLength="6"
+                  disabled={loading}
+                />
               </div>
 
-              <div className="row g-3">
-                <div className="col-6">
-                  <label className="form-label">Age (optional)</label>
-                  <input type="number" name="age" className="form-control" value={formData.age} onChange={handleChange} placeholder="25" />
-                </div>
-                <div className="col-6">
-                  <label className="form-label">Gender (optional)</label>
-                  <select name="gender" className="form-select" value={formData.gender} onChange={handleChange}>
-                    <option value="">Select gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
+              <div className="mb-3">
+                <label className="form-label">Confirm Password *</label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  className="form-control"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="Confirm your password"
+                  required
+                  minLength="6"
+                  disabled={loading}
+                />
               </div>
 
               <div className="mb-3">
                 <label className="form-label">I am a *</label>
-                <select name="role" className="form-select" value={formData.role} onChange={handleChange} required>
-                  <option value="">Select your role</option>
+                <select
+                  name="role"
+                  className="form-select"
+                  value={formData.role}
+                  onChange={handleChange}
+                  required
+                  disabled={loading}
+                >
                   <option value="student">Student</option>
                   <option value="university">University</option>
                   <option value="company">Company</option>
                 </select>
               </div>
 
-              <button type="submit" className="btn btn-danger w-100 text-white">
-                Create account
+              <button type="submit" className="btn btn-danger w-100 text-white" disabled={loading}>
+                {loading ? 'Creating account...' : 'Create account'}
               </button>
             </form>
 
