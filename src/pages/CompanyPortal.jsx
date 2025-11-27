@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Briefcase, Users } from 'lucide-react';
 import AnimatedBackground from '../components/AnimatedBackground';
@@ -7,12 +7,20 @@ const CompanyPortal = () => {
   const navigate = useNavigate();
 
   const graduates = [
-    { name: "Sarah Chen", degree: "MSc CS", skills: ["React", "Node"], availability: "Jun 2025" },
+    { id: 1, name: "Sarah Chen", degree: "MSc CS", skills: ["React", "Node"], availability: "Jun 2025" },
   ];
 
   const interns = [
-    { name: "Alex Kim", degree: "BSc CS", skills: ["Python", "ML"], availability: "Summer 2025" },
+    { id: 2, name: "Alex Kim", degree: "BSc CS", skills: ["Python", "ML"], availability: "Summer 2025" },
   ];
+
+  const handleInvite = (name) => {
+    alert(`Invitation sent to ${name}!`);
+  };
+
+  const handleViewProfile = (name) => {
+    alert(`Viewing profile for ${name}`);
+  };
 
   return (
     <>
@@ -58,15 +66,15 @@ const CompanyPortal = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {graduates.map((g, i) => (
-                        <tr key={i}>
+                      {graduates.map((g) => (
+                        <tr key={g.id}>
                           <td><strong>{g.name}</strong></td>
                           <td>{g.degree}</td>
                           <td>{g.skills.join(", ")}</td>
                           <td>{g.availability}</td>
                           <td>
-                            <button className="btn btn-sm btn-success me-1">Invite</button>
-                            <button className="btn btn-sm btn-outline-primary">View</button>
+                            <button className="btn btn-sm btn-success me-1" onClick={() => handleInvite(g.name)}>Invite</button>
+                            <button className="btn btn-sm btn-outline-primary" onClick={() => handleViewProfile(g.name)}>View</button>
                           </td>
                         </tr>
                       ))}
@@ -94,15 +102,15 @@ const CompanyPortal = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {interns.map((s, i) => (
-                        <tr key={i}>
+                      {interns.map((s) => (
+                        <tr key={s.id}>
                           <td><strong>{s.name}</strong></td>
                           <td>{s.degree}</td>
                           <td>{s.skills.join(", ")}</td>
                           <td>{s.availability}</td>
                           <td>
-                            <button className="btn btn-sm btn-success me-1">Invite</button>
-                            <button className="btn btn-sm btn-outline-primary">View</button>
+                            <button className="btn btn-sm btn-success me-1" onClick={() => handleInvite(s.name)}>Invite</button>
+                            <button className="btn btn-sm btn-outline-primary" onClick={() => handleViewProfile(s.name)}>View</button>
                           </td>
                         </tr>
                       ))}

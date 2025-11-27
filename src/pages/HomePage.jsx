@@ -7,6 +7,7 @@ import Navbar from '../components/NavBar';
 const HomePage = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     // Check if user is logged in
@@ -15,6 +16,14 @@ const HomePage = () => {
       setUser(JSON.parse(storedUser));
     }
   }, []);
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      navigate(`/opportunities?search=${encodeURIComponent(searchQuery)}`);
+    } else {
+      navigate('/opportunities');
+    }
+  };
 
   return (
     <>
@@ -79,9 +88,12 @@ const HomePage = () => {
                       type="text"
                       className="form-control border-start-0"
                       placeholder="Search title, keyword, org..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                       style={{ borderLeft: 'none', fontSize: '0.9rem', minWidth: '0' }}
                     />
-                    <button className="btn btn-danger text-white px-4">Search</button>
+                    <button className="btn btn-danger text-white px-4" onClick={handleSearch}>Search</button>
                   </div>
                 </div>
               </div>

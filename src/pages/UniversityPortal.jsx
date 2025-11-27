@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Plus, FileText, Users, Settings } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft, Plus, FileText } from 'lucide-react';
 import AnimatedBackground from '../components/AnimatedBackground';
+import api from '../services/api';
 
 const UniversityPortal = () => {
   const navigate = useNavigate();
-
-  const [researchPosts] = useState([
-    { title: "AI in Healthcare", discipline: "Computer Science", applicants: 12, status: "Open" },
-    { title: "Climate Modeling", discipline: "Environmental Science", applicants: 8, status: "Closed" },
-  ]);
+  const [researchPosts, setResearchPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [preferences, setPreferences] = useState({
     skills: "Python, TensorFlow, Research",
@@ -18,9 +16,29 @@ const UniversityPortal = () => {
     languages: "English, French",
   });
 
+  useEffect(() => {
+    const fetchUserOpportunities = async () => {
+      try {
+        const response = await api.get('/opportunities/user/opportunities');
+        const filtered = response.data.filter(o => o.type === 'research');
+        setResearchPosts(filtered);
+      } catch (err) {
+        console.error('Failed to fetch opportunities:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserOpportunities();
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPreferences({ ...preferences, [name]: value });
+  };
+
+  const handleUpdatePreferences = () => {
+    alert('Preferences updated successfully!');
   };
 
   return (
@@ -50,32 +68,34 @@ const UniversityPortal = () => {
             {/* POSTED RESEARCH */}
             <section className="mb-5">
               <h2 className="h5 fw-bold text-danger mb-3">Posted Research Opportunities</h2>
-              {researchPosts.length > 0 ? (
+              {loading ? (
+                <p className="text-muted">Loading opportunities...</p>
+              ) : researchPosts.length > 0 ? (
                 <div className="table-responsive">
                   <table className="table table-hover">
                     <thead className="table-light">
                       <tr>
                         <th>Title</th>
-                        <th>Discipline</th>
+                        <th>Location</th>
                         <th>Applicants</th>
                         <th>Status</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {researchPosts.map((post, i) => (
-                        <tr key={i}>
+                      {researchPosts.map((post) => (
+                        <tr key={post._id}>
                           <td><strong>{post.title}</strong></td>
-                          <td>{post.discipline}</td>
-                          <td>{post.applicants}</td>
+                          <td>{post.location}</td>
+                          <td>{post.applications?.length || 0}</td>
                           <td>
-                            <span className={`badge ${post.status === 'Open' ? 'bg-success' : 'bg-secondary'}`}>
+                            <span className={`badge ${post.status === 'open' ? 'bg-success' : 'bg-secondary'}`}>
                               {post.status}
                             </span>
                           </td>
                           <td>
-                            <button className="btn btn-sm btn-outline-primary me-1">View</button>
-                            <button className="btn btn-sm btn-outline-warning">Edit</button>
+                            <button className="btn btn-sm btn-outline-primary me-1" onClick={() => navigate(`/opportunities/${post._id}/applications`)}>View Applications</button>
+                            <button className="btn btn-sm btn-outline-warning" onClick={() => navigate(`/opportunities/${post._id}`)}>View Post</button>
                           </td>
                         </tr>
                       ))}
@@ -108,7 +128,7 @@ const UniversityPortal = () => {
                   <input type="text" name="languages" className="form-control" value={preferences.languages} onChange={handleChange} />
                 </div>
               </div>
-              <button className="btn btn-danger mt-3">Update Preferences</button>
+              <button className="btn btn-danger mt-3" onClick={handleUpdatePreferences}>Update Preferences</button>
             </section>
 
           </div>
