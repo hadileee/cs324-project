@@ -10,6 +10,7 @@ import CompanyPortal from './pages/CompanyPortal';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Opportunities from './pages/Opportunities';
+import OpportunityDetail from './pages/OpportunityDetail';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/university-portal" element={<UniversityPortal />} />
         <Route path="/company-portal" element={<CompanyPortal />} />
   <Route path="/opportunities" element={<Opportunities />} />
+  <Route path="/opportunities/:id" element={<OpportunityDetail />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>

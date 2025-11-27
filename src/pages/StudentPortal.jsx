@@ -13,11 +13,33 @@ const StudentPortal = () => {
     skills: ["Python", "React", "Machine Learning", "JavaScript"],
     preferences: ["Remote", "Paid", "Tunis"],
   });
+  const [applications, setApplications] = useState([]);
 
-  const [applications, setApplications] = useState([
-    { position: "AI Research Intern", organization: "MIT Media Lab", status: "Applied", applied: "2025-04-01" },
-    { position: "Frontend Developer", organization: "Google", status: "Interview", applied: "2025-03-15" },
-  ]);
+  // Load student's real applications when logged in
+  useEffect(() => {
+    const loadApplications = async () => {
+      try {
+        const storedUser = localStorage.getItem('user');
+        if (!storedUser) return;
+        const user = JSON.parse(storedUser);
+        if (user.role !== 'student') return;
+
+        const res = await (await import('../services/api')).default.get('/applications/student/applications');
+        const apps = res.data.applications.map((a) => ({
+          id: a._id,
+          position: a.opportunity?.title || 'Opportunity',
+          organization: a.opportunity?.location || '',
+          status: a.status || a.status, // keep status
+          applied: a.appliedAt ? new Date(a.appliedAt).toLocaleDateString() : new Date(a.createdAt).toLocaleDateString(),
+        }));
+        setApplications(apps);
+      } catch (err) {
+        // silently ignore - keep empty state
+        // console.error('Failed to load applications', err);
+      }
+    };
+    loadApplications();
+  }, []);
 
   return (
     <>
