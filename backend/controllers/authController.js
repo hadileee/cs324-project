@@ -115,6 +115,27 @@ const getCurrentUser = async (req, res, next) => {
   }
 };
 
+// Forgot password (stub - does not send emails)
+const forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: 'Please provide an email' });
+    }
+
+    const user = await User.findOne({ email });
+    // In a real app: generate token and send email. Here, just acknowledge.
+    if (!user) {
+      return res.status(200).json({ message: 'If an account exists for that email, a reset link will be sent' });
+    }
+
+    // Pretend to send email
+    return res.status(200).json({ message: 'If an account exists for that email, a reset link will be sent' });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   register,
   login,

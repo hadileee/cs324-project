@@ -9,9 +9,11 @@ import UniversityPortal from './pages/UniversityPortal';
 import CompanyPortal from './pages/CompanyPortal';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import ForgotPassword from './pages/ForgotPassword';
 import Opportunities from './pages/Opportunities';
 import OpportunityDetail from './pages/OpportunityDetail';
 import OpportunityApplications from './pages/OpportunityApplications';
+import OpportunityCreate from './pages/OpportunityCreate';
 
 const App = () => {
   return (
@@ -27,6 +29,8 @@ const App = () => {
   <Route path="/opportunities" element={<Opportunities />} />
   <Route path="/opportunities/:id" element={<OpportunityDetail />} />
   <Route path="/opportunities/:id/applications" element={<OpportunityApplications />} />
+  <Route path="/opportunities/new" element={<OpportunityCreate />} />
+  <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>

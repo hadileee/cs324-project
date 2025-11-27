@@ -41,7 +41,7 @@ const UniversityPortal = () => {
 
             {/* POST NEW */}
             <div className="text-center mb-5">
-              <button className="btn btn-danger px-5">
+              <button className="btn btn-danger px-5" onClick={() => navigate('/opportunities/new?type=research')}>
                 <Plus size={18} className="me-2" />
                 Post New Research Opportunity
               </button>

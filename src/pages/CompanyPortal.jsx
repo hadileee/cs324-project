@@ -32,11 +32,11 @@ const CompanyPortal = () => {
 
             {/* POST BUTTONS */}
             <div className="d-flex gap-2 mb-5">
-              <button className="btn btn-danger">
+              <button className="btn btn-danger" onClick={() => navigate('/opportunities/new?type=graduate_job')}>
                 <Plus size={18} className="me-2" />
                 Post Job
               </button>
-              <button className="btn btn-outline-danger">
+              <button className="btn btn-outline-danger" onClick={() => navigate('/opportunities/new?type=internship')}>
                 <Plus size={18} className="me-2" />
                 Post Internship
               </button>
