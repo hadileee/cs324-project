@@ -241,37 +241,6 @@ const ProfilePage = () => {
               </div>
             )}
 
-            {/* AVATAR */}
-            <div className="text-center mb-4">
-              <div className="position-relative d-inline-block">
-                <div
-                  className="bg-light border border-2 border-dashed rounded-circle d-flex align-items-center justify-content-center"
-                  style={{ width: 120, height: 120 }}
-                >
-                  {avatar ? (
-                    <img src={avatar} alt="Avatar" className="rounded-circle w-100 h-100" style={{ objectFit: 'cover' }} />
-                  ) : (
-                    <Upload size={40} className="text-muted" />
-                  )}
-                </div>
-                <label
-                  htmlFor="avatar-upload"
-                  className="position-absolute bottom-0 end-0 bg-danger text-white rounded-circle d-flex align-items-center justify-content-center cursor-pointer"
-                  style={{ width: 36, height: 36, cursor: 'pointer' }}
-                >
-                  <Upload size={16} />
-                </label>
-                <input
-                  id="avatar-upload"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleAvatarChange}
-                  className="d-none"
-                />
-              </div>
-              <p className="text-muted small mt-2">Click to change avatar</p>
-            </div>
-
             {/* PERSONAL INFO */}
               {/* PERSONAL INFO */}
             <section className="mb-5">
