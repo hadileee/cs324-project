@@ -26,21 +26,29 @@ const getUserById = async (req, res, next) => {
 // Update user profile
 const updateProfile = async (req, res, next) => {
   try {
-    const { firstName, lastName, bio, location, phone, profilePicture, skills } = req.body;
+    const userId = req.params.id || req.user.id;
+    
+    // Fields that can be updated
+    const allowedFields = [
+      'firstName', 'lastName', 'bio', 'location', 'phone', 
+      'profilePicture', 'skills', 'resume', 'gpa', 'university',
+      'graduationDate', 'universityName', 'website', 'contactPerson',
+      'companyName', 'industry', 'companySize'
+    ];
+
+    // Filter req.body to only allow certain fields
+    const updateData = {};
+    allowedFields.forEach(field => {
+      if (req.body[field] !== undefined) {
+        updateData[field] = req.body[field];
+      }
+    });
 
     const user = await User.findByIdAndUpdate(
-      req.user.id,
-      {
-        firstName: firstName || undefined,
-        lastName: lastName || undefined,
-        bio: bio || undefined,
-        location: location || undefined,
-        phone: phone || undefined,
-        profilePicture: profilePicture || undefined,
-        skills: skills || undefined,
-      },
+      userId,
+      updateData,
       { new: true, runValidators: true }
-    );
+    ).select('-password');
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });

@@ -18,6 +18,7 @@ router.get('/role/:role', getUsersByRole);
 
 // User profile routes
 router.patch('/profile/update', auth, updateProfile);
+router.put('/:id', auth, updateProfile);
 
 // Admin routes
 router.get('/', auth, authorize('admin'), getAllUsers);
