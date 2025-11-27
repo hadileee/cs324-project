@@ -29,10 +29,7 @@ const userSchema = new mongoose.Schema(
       enum: ['student', 'university', 'company', 'admin'],
       required: true,
     },
-    profilePicture: {
-      type: String,
-      default: null,
-    },
+    // profilePicture removed - avatars not used in this project
     bio: {
       type: String,
       default: '',

@@ -31,7 +31,7 @@ const updateProfile = async (req, res, next) => {
     // Fields that can be updated
     const allowedFields = [
       'firstName', 'lastName', 'bio', 'location', 'phone', 
-      'profilePicture', 'skills', 'resume', 'gpa', 'university',
+      'skills', 'resume', 'gpa', 'university',
       'graduationDate', 'universityName', 'website', 'contactPerson',
       'companyName', 'industry', 'companySize'
     ];
