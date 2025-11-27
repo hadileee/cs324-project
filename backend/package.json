@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "seed": "node scripts/seedOpportunities.js"
   },
   "keywords": ["unimatch", "internships", "mongodb"],
   "author": "",
